@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sukoona — concept prototype
 
-## Getting Started
+A mobile-first concept website for the fictional brand **Sukoona** and its
+placeholder product, **Sukoona Gummy**.
 
-First, run the development server:
+This is a design prototype for review. It has no checkout, no payments, no lead
+capture and no purchasing links. Every product detail is fictional.
+
+## Run it
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Next.js 16 (App Router), TypeScript, Tailwind CSS v4. No runtime dependencies
+beyond React and Next.
 
-## Learn More
+## How the theming works
 
-To learn more about Next.js, take a look at the following resources:
+Three visual styles — Soft, Balanced, Bold — swap CSS custom properties. A
+`data-style` attribute on the page wrapper selects the token set defined in
+`app/globals.css`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Two separate accent scales exist on purpose:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `--accent` / `--accent-ink` / `--accent-soft` for the cream page background
+- `--stage-accent` / `--stage-accent-ink` / `--stage-accent-soft` inside the
+  product section
 
-## Deploy on Vercel
+They are separate because the Bold style puts the product section on a dark
+green ground. A single accent cannot stay legible on both a cream page and a
+dark card, so components inside the product section use the stage scale.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The style bar changes colour and the illustration only. It never changes a
+product detail, a quantity or anything a reader could mistake for a dose.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Files
+
+| Path | What it does |
+| --- | --- |
+| `app/globals.css` | Design tokens, the three style blocks, focus and motion rules |
+| `app/page.tsx` | Page composition and the shared style state |
+| `lib/content.ts` | All copy and placeholder product data |
+| `components/ProductStage.tsx` | Flavour switch, pack toggle, live summary |
+| `components/StyleBar.tsx` | Draggable style bar plus button alternatives |
+| `components/GummyIllustration.tsx` | SVG pack illustration |
+| `components/Ingredients.tsx` | Clickable ingredient cards |
+| `components/Faq.tsx` | Expandable questions |
+| `components/Icons.tsx` | Inline SVG icons |
+
+## Accessibility notes
+
+- Every control is a native button or input with a real ARIA role and state.
+- The style bar is a native range input, so it drags with a pointer and moves
+  with arrow keys. Three buttons do the same job for anyone who cannot drag.
+- Text contrast was measured across all three styles at 375, 768, 1024 and
+  1440 px. All text meets WCAG AA.
+- Focus rings are visible and take their colour from the active style.
+- `prefers-reduced-motion` disables transitions and smooth scrolling.
+- Icons are inline SVG. No emoji is used as an icon.

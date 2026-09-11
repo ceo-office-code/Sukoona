@@ -1,26 +1,220 @@
 @import "tailwindcss";
 
+/* ============================================================
+   Sukoona design tokens
+   Palette lifted from the packaging: warm studio ivory, deep
+   forest teal, champagne gold, with coral and indigo as the
+   colourway accents.
+
+   Three visual styles swap the accent and stage tokens at
+   runtime via a data-style attribute on the page wrapper.
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Warm ivory ramp, sampled from the product photography */
+  --ivory-50: #FCF8F0;
+  --ivory-100: #F7F1E4;
+  --ivory-200: #EFE6D4;
+  --ivory-300: #E2D5BE;
+
+  /* Forest teal ramp, from the Forest label */
+  --forest-900: #16241F;
+  --forest-800: #1A3B35;
+  --forest-700: #1E4A42;
+  --forest-600: #2E5F55;
+
+  /* Champagne gold, from the lids and the crescent */
+  --gold-500: #A8822C;
+  --gold-400: #C79A3A;
+  --gold-300: #D9BC6E;
+
+  /* Colourway accents */
+  --coral-500: #BC5E44;
+  --indigo-500: #1F3566;
+
+  /* Semantic — defaults are the "balanced" style */
+  --ground: var(--ivory-100);
+  --surface: #FFFCF6;
+  --surface-sunk: var(--ivory-200);
+  --ink: var(--forest-900);
+  --ink-soft: #3A4B45;
+  --muted: #5B6A64;
+  --line: var(--ivory-300);
+  --accent: var(--forest-700);
+  --accent-ink: #FFFCF6;
+  --accent-soft: #E4EDEA;
+
+  /* Product stage — the surface the style bar restyles most */
+  --stage: var(--ivory-200);
+  --stage-ink: var(--forest-900);
+  --stage-muted: #5B6A64;
+  --stage-line: var(--ivory-300);
+  --stage-chip: #FFFCF6;
+  --stage-accent: var(--forest-700);
+  --stage-accent-ink: #FFFCF6;
+  --stage-accent-soft: #E4EDEA;
+
+  /* Piece diagram */
+  --piece-a: #2E5F55;
+  --piece-b: #1E4A42;
+  --tray: #FFFCF6;
+
+  --radius-card: 28px;
+  --shadow-soft: 0 1px 2px rgba(22, 36, 31, 0.04), 0 8px 24px -12px rgba(22, 36, 31, 0.14);
+  --shadow-lift: 0 2px 4px rgba(22, 36, 31, 0.05), 0 18px 40px -16px rgba(22, 36, 31, 0.22);
+}
+
+/* ---- Soft ---- */
+[data-style="soft"] {
+  --ground: var(--ivory-50);
+  --accent: #2E5F55;
+  --accent-soft: #E8F0ED;
+  --stage: #F3F6F2;
+  --stage-ink: #1D332D;
+  --stage-muted: #52635C;
+  --stage-line: #DEE8E2;
+  --stage-chip: #FFFFFF;
+  --stage-accent: #2C5C52;
+  --stage-accent-ink: #FFFFFF;
+  --stage-accent-soft: #E8F0ED;
+  --piece-a: #96BDB2;
+  --piece-b: #6E9C90;
+  --tray: #FFFFFF;
+  --radius-card: 34px;
+}
+
+/* ---- Balanced: the :root defaults ---- */
+
+/* ---- Bold ---- */
+[data-style="bold"] {
+  --ground: var(--ivory-200);
+  --accent: var(--forest-800);
+  --accent-soft: #DFE9E5;
+  --stage: var(--forest-700);
+  --stage-ink: #F7F1E4;
+  --stage-muted: #BCD2CB;
+  --stage-line: #2F6055;
+  --stage-chip: #245349;
+  --stage-accent: var(--gold-300);
+  --stage-accent-ink: #16241F;
+  --stage-accent-soft: #2D6055;
+  --piece-a: var(--gold-300);
+  --piece-b: var(--gold-400);
+  --tray: #245349;
+  --radius-card: 18px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ground: var(--ground);
+  --color-surface: var(--surface);
+  --color-surface-sunk: var(--surface-sunk);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+
+  --color-stage: var(--stage);
+  --color-stage-ink: var(--stage-ink);
+  --color-stage-muted: var(--stage-muted);
+  --color-stage-line: var(--stage-line);
+  --color-stage-chip: var(--stage-chip);
+  --color-stage-accent: var(--stage-accent);
+  --color-stage-accent-ink: var(--stage-accent-ink);
+  --color-stage-accent-soft: var(--stage-accent-soft);
+
+  --color-gold-300: var(--gold-300);
+  --color-gold-400: var(--gold-400);
+
+  --font-display: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+* { -webkit-tap-highlight-color: transparent; }
+
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 420ms ease;
+}
+
+/* Visible focus on every interactive element */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+.stage-scope a:focus-visible,
+.stage-scope button:focus-visible,
+.stage-scope input:focus-visible {
+  outline-color: var(--stage-accent);
+}
+
+/* The draggable style bar */
+.style-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  background: transparent;
+  cursor: grab;
+  height: 44px;
+  margin: 0;
+}
+.style-range:active { cursor: grabbing; }
+
+.style-range::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--stage-line);
+}
+.style-range::-moz-range-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--stage-line);
+}
+.style-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 34px;
+  height: 34px;
+  margin-top: -13px;
+  border-radius: 999px;
+  background: var(--stage-accent);
+  border: 4px solid var(--stage-chip);
+  box-shadow: 0 2px 10px rgba(22, 36, 31, 0.28);
+  transition: transform 180ms ease;
+}
+.style-range::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--stage-accent);
+  border: 4px solid var(--stage-chip);
+  box-shadow: 0 2px 10px rgba(22, 36, 31, 0.28);
+}
+.style-range:hover::-webkit-slider-thumb { transform: scale(1.08); }
+.style-range:active::-webkit-slider-thumb { transform: scale(0.96); }
+
+.themed {
+  transition: background-color 420ms ease, color 420ms ease, border-color 420ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
