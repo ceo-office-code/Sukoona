@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { PACKS } from "@/lib/content";
 import PieceRow from "./PieceRow";
 
@@ -33,6 +34,7 @@ export default function ProductStage() {
           <PieceRow pack={pack} />
           <p aria-live="polite"><strong>{packInfo.label}</strong> · {packInfo.blurb}</p>
         </div>
+        <Link className="button button-primary" href={`/contact?via=product&pack=${pack}`}>Enquire about this jar <span aria-hidden="true">↗</span></Link>
         <p className="product-note">Pack preview only. The pictured label reads 10 gummies. Product details are being finalised; this preview has no checkout.</p>
       </div>
     </section>

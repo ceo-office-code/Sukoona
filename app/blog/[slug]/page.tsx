@@ -43,7 +43,7 @@ export default async function ArticlePage({ params }: Props) {
           <nav className="article-toc" aria-label="On this page"><h2>In this story</h2>{article.sections.map((s,i) => <a key={s.heading} href={`#${sectionId(i)}`}>{s.heading}</a>)}</nav>
           <div className="article-body">
             {article.sections.map((section,index) => <section key={section.heading} id={sectionId(index)}><h2>{section.heading}</h2>{section.paragraphs.map(p => <p key={p}>{p}</p>)}</section>)}
-            <div className="article-bottom"><Link className="text-link" href="/blog">← All stories</Link><Link className="text-link" href={`/blog/${next.slug}`}>Next story ↗</Link></div>
+            <p><Link className="text-link" href="/contact?via=journal">Have a question for Sukoona? Get in touch ↗</Link></p><div className="article-bottom"><Link className="text-link" href="/blog">← All stories</Link><Link className="text-link" href={`/blog/${next.slug}`}>Next story ↗</Link></div>
           </div>
         </div>
       </article>

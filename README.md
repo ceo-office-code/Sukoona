@@ -53,3 +53,7 @@ The unused older coral, midnight and collection images remain available as sourc
 ## Content status
 
 The site retains the original project's product-preview status and explicitly identified placeholder botanical entries. Blog articles offer general everyday ideas and label-reading guidance; they do not assert a Sukoona formulation, dosage or health benefit.
+
+## Lead capture and admin
+
+The /admin workspace manages website enquiries, assignments, follow-ups, activity notes, archives, reports and CSV exports. Public forms are at /contact, with consent and WhatsApp continuation. See docs/admin-workspace.md for access, workflow, reporting definitions, testing and email delivery setup.
