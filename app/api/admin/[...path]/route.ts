@@ -231,12 +231,20 @@ export async function POST(req: Request, ctx: Context) {
           .maybeSingle(),
       );
       if (existing) throw new InputError("This email is already on the team.");
+      if (
+        typeof b.password !== "string" ||
+        b.password.length < 12 ||
+        b.password.length > 256
+      )
+        throw new InputError(
+          "Use a password of 12 to 256 characters for the new team member.",
+        );
       const auth = await client.auth.admin.createUser({
         email: address,
+        password: b.password,
         email_confirm: true,
       });
-      if (auth.error && !auth.error.message.toLowerCase().includes("already"))
-        throw new InputError("Could not create this login.", 503);
+      if (auth.error) throw new InputError("Could not create this login.", 503);
       return json(
         checked(
           await client

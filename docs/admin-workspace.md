@@ -2,8 +2,7 @@
 
 ## Daily use
 Open https://sukoona.com/admin. The first owner is ceo-office@growwstack.in.
-Request a sign-in link and open it in the SAME browser where you requested it.
-Links are single use. The workspace session expires after 12 hours.
+Sign in with your authorised email and password. The workspace session expires after 12 hours.
 Unknown and disabled emails cannot access any customer information.
 
 1. Overview shows active lead counts and follow-up reminders.
@@ -30,17 +29,17 @@ Supabase stores customers, orders, CRM records and activity. Vercel hosts the Ne
 All customer/CRM tables enable RLS and revoke browser-role access.
 Only server-side code uses SUPABASE_SECRET_KEY. It must never be prefixed NEXT_PUBLIC.
 Admin sessions are random, HttpOnly, Secure in production, SameSite Strict, with SHA-256 hashes in the database.
-Email sign-in uses Supabase PKCE with a short-lived HttpOnly SameSite Lax verifier cookie.
-Approved callback: https://sukoona.com/api/admin/auth/callback** (suffix permits Supabase flow-id query).
+Passwords are verified by Supabase Auth on the server. They are not stored in CRM tables, GitHub, browser storage or Vercel environment settings. The app creates its own HttpOnly session after verifying active team membership.
 Admin API mutations require a matching Origin and bounded JSON payload.
 Database-backed rate limits protect public capture, events and sign-in.
 Agents can only read or change assigned leads; managers/owners can see all leads.
 Optimistic lead versions reject conflicting edits, and an activity record accompanies each update.
 
-## Email delivery limitation
-The current Supabase Free built-in mail service can send only to authorised organisation email addresses and has a low sending limit. The first owner email is the account email.
-To enable reliable login for additional team members, configure a custom SMTP provider in Supabase Authentication > Emails > SMTP Settings. Creating CRM membership does not configure email delivery or send an invitation.
-No paid email service has been purchased or connected.
+## Password setup
+The owner password is configured directly in Supabase Auth; it is never recorded here.
+New team members receive an initial password entered by the owner when creating their access. Share it securely. Sign-in does not depend on an email service.
+To set a password for an existing authorised member, run scripts/set-admin-password.mjs with the member email and supply the password through stdin. This revokes previous workspace sessions.
+No public signup or password reset endpoint is exposed.
 
 ## Reporting definitions
 - Total / pipeline / sources: non-archived leads, all time.
@@ -68,5 +67,4 @@ node --env-file=.env.local scripts/provision-admin.mjs <authorised-email>
 The public /privacy page describes capture, activity tracking, service providers and contact choices.
 Privacy requests are captured as an enquiry for a verified human response; deletion is not automated.
 Activity and submission panels display the latest 200 and 100 entries respectively, explicitly labelled when capped.
-The database keeps complete history. Review retention, backups and custom email delivery before expanding operations.
-
+The database keeps complete history. Review retention and backups before expanding operations.

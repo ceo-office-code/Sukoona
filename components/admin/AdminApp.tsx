@@ -82,9 +82,7 @@ export default function AdminApp() {
       .then((v) => setMe(v.member))
       .catch(() => {
         if (new URLSearchParams(location.search).get("login") === "expired")
-          setError(
-            "That sign-in link expired or was opened in another browser. Please request a new link and open it here.",
-          );
+          setError("Please sign in with your email and password.");
       })
       .finally(() => setLoading(false));
     const expire = () => {
@@ -110,7 +108,17 @@ export default function AdminApp() {
     return (
       <main className="admin-app admin-loading">Opening your workspace…</main>
     );
-  if (!me) return <Login initialError={error} />;
+  if (!me)
+    return (
+      <Login
+        initialError={error}
+        onLogin={async () => {
+          const value = await api("session");
+          setMe(value.member);
+          setError("");
+        }}
+      />
+    );
   return (
     <main className="admin-app" id="main-content">
       <aside className={"admin-sidebar " + (mobile ? "is-open" : "")}>
@@ -243,9 +251,16 @@ export default function AdminApp() {
     </main>
   );
 }
-function Login({ initialError }: { initialError: string }) {
+function Login({
+  initialError,
+  onLogin,
+}: {
+  initialError: string;
+  onLogin: () => Promise<void>;
+}) {
   const [email, setEmail] = useState(""),
-    [sent, setSent] = useState(false),
+    [password, setPassword] = useState(""),
+    [showPassword, setShowPassword] = useState(false),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(initialError);
   async function submit(e: React.FormEvent) {
@@ -253,8 +268,9 @@ function Login({ initialError }: { initialError: string }) {
     setBusy(true);
     setError("");
     try {
-      await api("auth/request", "POST", { email });
-      setSent(true);
+      await api("auth/login", "POST", { email, password });
+      setPassword("");
+      await onLogin();
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -286,11 +302,7 @@ function Login({ initialError }: { initialError: string }) {
         <form onSubmit={submit} className="login-form">
           <span className="admin-kicker">WELCOME BACK</span>
           <h2>Your workspace awaits.</h2>
-          <p>
-            {sent
-              ? "If your email has access, a sign-in link is on its way. Open it in this same browser to continue."
-              : "Sign in with your authorised team email. We’ll send you a secure sign-in link."}
-          </p>
+          <p>Sign in with your team email and password.</p>
           <label>
             Email address
             <input
@@ -298,34 +310,39 @@ function Login({ initialError }: { initialError: string }) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              autoComplete="email"
-              disabled={sent}
+              autoComplete="username"
+              disabled={busy}
             />
           </label>
+          <label>
+            Password
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              maxLength={256}
+              autoComplete="current-password"
+              disabled={busy}
+            />
+          </label>
+          <button
+            type="button"
+            className="text-button password-visibility"
+            aria-pressed={showPassword}
+            onClick={() => setShowPassword((v) => !v)}
+          >
+            {showPassword ? "Hide password" : "Show password"}
+          </button>
           {error && (
             <div role="alert" className="admin-alert">
               {error}
             </div>
           )}
           <button className="admin-primary" disabled={busy}>
-            {busy
-              ? "Please wait…"
-              : sent
-                ? "Send another sign-in link"
-                : "Send sign-in link"}
+            {busy ? "Signing in…" : "Sign in"}
             <ArrowUpRight size={18} />
           </button>
-          {sent && (
-            <button
-              type="button"
-              className="text-button"
-              onClick={() => {
-                setSent(false);
-              }}
-            >
-              Use another email
-            </button>
-          )}
           <small>
             Access is limited to the Sukoona team.
             <br />
@@ -1339,7 +1356,18 @@ function Team({
               </label>
               <label>
                 Email
-                <input name="email" type="email" required />
+                <input name="email" type="email" required autoComplete="off" />
+              </label>
+              <label>
+                Initial password
+                <input
+                  name="password"
+                  type="password"
+                  minLength={12}
+                  maxLength={256}
+                  required
+                  autoComplete="new-password"
+                />
               </label>
               <label>
                 Role
@@ -1353,10 +1381,8 @@ function Team({
               Create access <Plus size={16} />
             </button>
             <p className="panel-note">
-              Configure custom SMTP in Supabase before adding external team
-              emails. The current built-in email service is restricted to
-              authorised organisation addresses. Adding access does not send an
-              email.
+              Create a password for this member and share it with them securely.
+              They can sign in immediately; no email link is required.
             </p>
           </form>
         )}
@@ -1426,7 +1452,7 @@ function SettingsPanel({ me }: { me: Member }) {
             Customer database<strong>Supabase</strong>
           </p>
           <p>
-            Sign-in<strong>Email link · 12-hour session</strong>
+            Sign-in<strong>Email and password · 12-hour session</strong>
           </p>
           <p>
             Reporting timezone<strong>India · Asia/Kolkata</strong>

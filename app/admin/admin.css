@@ -1171,3 +1171,10 @@
     gap: 0 12px;
   }
 }
+
+.admin-app .password-visibility {
+  display: block;
+  margin: 0 0 18px auto;
+  font-size: 10px !important;
+  color: #6a7f57;
+}
