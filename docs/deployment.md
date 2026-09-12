@@ -8,6 +8,21 @@
 - DNS registrar: GoDaddy. Keep DNS there and use the exact records Vercel provides for this project.
 - Customer and order database: a separate Supabase PostgreSQL project.
 
+## Provisioned services
+
+Provisioned on 12 September 2026:
+
+- Vercel project: `sukoona` in `captaincool01s-projects`.
+- Production deployment: https://sukoona.vercel.app.
+- Supabase project: `xajceyonhqbiegixjgjy`, in the `Growwstack` organization (Singapore).
+- Database dashboard: https://supabase.com/dashboard/project/xajceyonhqbiegixjgjy.
+- Migration `20260912000000` has been applied. The SQL access/constraint checks pass against both temporary PostgreSQL and the hosted project; test records were rolled back.
+- GoDaddy DNS: `A @ 76.76.21.21` and `CNAME www 86bdb028af2d879e.vercel-dns-016.com`, with a one-hour TTL. Vercel validates both records. The apex uses its supported single-address option; the dashboard may recommend its newer pair of addresses as an optional update.
+- The Vercel project redirects `www.sukoona.com` to `sukoona.com` with HTTP 308.
+- `NEXT_PUBLIC_SITE_URL`, `SUPABASE_URL` and `SUPABASE_SECRET_KEY` are configured for production in Vercel. The database key is stored as a Secret and is absent from this repository.
+- HTTPS is active for both domains. The homepage, a journal article and the www redirect were verified publicly.
+- The code is pushed to GitHub `main`. Vercel's Git integration still needs browser authorization for the `ceo-office-code` GitHub account; CLI production deployments work.
+
 ## Website
 
 Run `npm ci`, `npm run lint` and `npm run build` before publishing. Import the GitHub repository into Vercel, or link this directory using `npx vercel`. Set the production branch to `main`. Deploy with `npx vercel --prod` when using the CLI.
