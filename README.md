@@ -1,65 +1,55 @@
-# Sukoona — concept prototype
+# Sukoona website
 
-A mobile-first concept website for the fictional brand **Sukoona** and its
-placeholder product, **Sukoona Gummy**.
+Next.js 16, React 19, TypeScript and Tailwind CSS 4. The existing project structure and dependencies are preserved.
 
-This is a design prototype for review. It has no checkout, no payments, no lead
-capture and no purchasing links. Every product detail is fictional.
+## Run locally
 
-## Run it
+`npm run dev` opens the development site at http://localhost:3000.
+`npm run build` creates the production build; `npm start` serves it.
+The existing Google Fonts integration needs network access during an uncached build.
 
-```bash
-npm install
-npm run dev
-```
+## Experience
 
-Then open http://localhost:3000
+- A dark cinematic hero uses the forest Sukoona jar. Scrolling lifts the gold lid, reveals amber gummies and brings in the violet-and-gold backdrop. Scrolling back reverses it.
+- The header switch changes the surrounding website between dark and light themes and stores the preference in this browser. The cinematic hero retains its dark art direction.
+- There is one fixed forest label. The previous label picker and large style panel are removed.
+- Existing pack preview, botanical cards and FAQ interactions remain. There is no checkout.
+- Reduced-motion preferences show the opened composition without the extended scroll sequence.
+- The journal has a homepage section, a /blog index, and three complete article routes.
 
-## Stack
+## Editing
 
-Next.js 16 (App Router), TypeScript, Tailwind CSS v4. No runtime dependencies
-beyond React and Next.
+- `components/ScrollHero.tsx`: scroll progress and animation layers.
+- `app/globals.css`: theme tokens, responsive layout and clipping coordinates.
+- `components/SiteHeader.tsx`: navigation and persisted theme control.
+- `components/ProductStage.tsx`: forest jar and pack preview.
+- `lib/content.ts`: product and FAQ copy.
+- `lib/articles.json`: article titles, slugs, excerpts, categories and body sections.
+- `app/blog/[slug]/page.tsx`: server-rendered articles, metadata and BlogPosting structured data.
 
-## How the theming works
+To add an article, append the same data shape to articles.json with a unique slug, then rebuild. The journal cards, generated routes and sitemap update from that list. Dates are in lib/blog.ts.
 
-Three visual styles — Soft, Balanced, Bold — swap CSS custom properties. A
-`data-style` attribute on the page wrapper selects the token set defined in
-`app/globals.css`.
+## Domain and search configuration
 
-Two separate accent scales exist on purpose:
+Production defaults to `https://sukoona.com`; local development defaults to `http://localhost:3000` and disallows indexing. Override either with `NEXT_PUBLIC_SITE_URL`. This controls canonical links, structured-data URLs and sitemap.xml. Search traffic also depends on public deployment and indexing.
 
-- `--accent` / `--accent-ink` / `--accent-soft` for the cream page background
-- `--stage-accent` / `--stage-accent-ink` / `--stage-accent-soft` inside the
-  product section
+Every article has a unique title, description, canonical URL, visible author/date, headings, readable body content and links to other articles. Unknown article slugs return 404.
 
-They are separate because the Bold style puts the product section on a dark
-green ground. A single accent cannot stay legible on both a cream page and a
-dark card, so components inside the product section use the stage scale.
+## Hosting and customer database
 
-The style bar changes colour and the illustration only. It never changes a
-product detail, a quantity or anything a reader could mistake for a dose.
+The website targets Vercel, with a separate Supabase PostgreSQL database for customers, orders and order items. The database migration is in `supabase/migrations/20260912000000_customers_and_orders.sql`. All three tables enable row-level security and deny access to browser roles; only trusted server operations can access them.
 
-## Files
+See `docs/deployment.md` for deployment, domain and database setup. The website currently has no checkout or payment integration, so it does not yet write customer or order records. Blog content stays in the repository.
 
-| Path | What it does |
-| --- | --- |
-| `app/globals.css` | Design tokens, the three style blocks, focus and motion rules |
-| `app/page.tsx` | Page composition and the shared style state |
-| `lib/content.ts` | All copy and placeholder product data |
-| `components/ProductStage.tsx` | Flavour switch, pack toggle, live summary |
-| `components/StyleBar.tsx` | Draggable style bar plus button alternatives |
-| `components/GummyIllustration.tsx` | SVG pack illustration |
-| `components/Ingredients.tsx` | Clickable ingredient cards |
-| `components/Faq.tsx` | Expandable questions |
-| `components/Icons.tsx` | Inline SVG icons |
+## Assets
 
-## Accessibility notes
+public/product/forest.png is the supplied forest packaging image.
+public/product/scroll-sprite.png is a 1024 × 1536 PNG with real transparency, containing separate lid, gummy and jar bands.
+public/product/scroll-energy.png is a 1672 × 941 cinematic background.
+The sprite and background were generated with the built-in imagegen tool. Prompts are recorded in docs/scroll-artwork-prompts.md. Original images remain unchanged.
 
-- Every control is a native button or input with a real ARIA role and state.
-- The style bar is a native range input, so it drags with a pointer and moves
-  with arrow keys. Three buttons do the same job for anyone who cannot drag.
-- Text contrast was measured across all three styles at 375, 768, 1024 and
-  1440 px. All text meets WCAG AA.
-- Focus rings are visible and take their colour from the active style.
-- `prefers-reduced-motion` disables transitions and smooth scrolling.
-- Icons are inline SVG. No emoji is used as an icon.
+The unused older coral, midnight and collection images remain available as source assets, but are not shown as customer choices.
+
+## Content status
+
+The site retains the original project's product-preview status and explicitly identified placeholder botanical entries. Blog articles offer general everyday ideas and label-reading guidance; they do not assert a Sukoona formulation, dosage or health benefit.

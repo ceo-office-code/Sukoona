@@ -1,8 +1,6 @@
 "use client";
 
-import type { StyleKey } from "@/lib/content";
-
-type Props = { pack: number; styleKey: StyleKey };
+type Props = { pack: number };
 
 const COLS = 5;
 const SIZE = 34;
@@ -14,10 +12,10 @@ const START_X = (300 - (COLS * SIZE + (COLS - 1) * GAP)) / 2;
  * It sits under the jar photograph and answers "how many", which
  * the photograph alone cannot show.
  */
-export default function PieceRow({ pack, styleKey }: Props) {
+export default function PieceRow({ pack }: Props) {
   const rows = Math.ceil(pack / COLS);
   const startY = rows === 1 ? 30 : 16;
-  const radius = styleKey === "soft" ? 13 : styleKey === "bold" ? 6 : 10;
+  const radius = 10;
 
   const pieces = Array.from({ length: 10 }, (_, i) => ({
     i,

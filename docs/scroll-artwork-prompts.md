@@ -1,0 +1,11 @@
+# Sukoona scroll artwork
+
+Built-in imagegen tool. Final files are in public/product/.
+
+## Layered sprite — scroll-sprite.png
+
+Use case: product-mockup. Make an animation-ready product sprite based on Image 1 Sukoona jar. Image 2 is only lighting mood. Portrait composition 1024x1536 requested. True transparent PNG background, no floor, no backdrop or baked checkerboard. Product exploded view with clean distinct horizontal bands, NO overlaps across bands: brushed GOLD screw lid exactly centered at y8-20% of full canvas; three small amber spherical gummies floating separately in y28-43%; open clear jar body at y50-93%. Transparent blank gaps between lid/gummies/body. Body width 72% of canvas, lid same width/diameter. Camera front-on slightly above to show open rim and top-facing lid, nearly flat lid orientation for easy animation lowering it onto jar. Product body must faithfully preserve provided forest teal botanical label, ivory serif lowercase "sukoona", "GUMMY VATI", "10 GUMMIES", gold crescent, gold stems, sage leaves, cream flowers, coral arc. No additional text. Preserve squat body proportions. Very crisp real photorealistic studio product photography, warm gold highlights, subtle violet edge light. All elements fully in frame. No copied third-party brand, no fruit, no extra props, no liquid splash on sprite. These elements will be sliced via CSS clipping and animated on scroll, so empty horizontal transparent gaps are essential.
+
+## Energy backdrop — scroll-energy.png
+
+Use case: ads-marketing. Create a standalone cinematic dark background inspired by the second supplied reference's luminous amber and violet liquid ribbons. Wide landscape 16:9. Near-black #08090b seamless outer edges. Rich photographic golden-amber fluid ribbons sweeping outward from a low center focal point, violet-magenta silky fluid waves and sparse glowing gold droplets. Dark reflective floor along lowest edge. Center lower area kept dark for a separate product cutout. Sophisticated dramatic light, dimensional fluid, striking energy but restrained so type can sit at left. No jar, bottle, gummies, mango or other fruit, no text, logo, watermark, UI, collage. Only abstract flowing liquid and light on black. Request 1920x1080.
