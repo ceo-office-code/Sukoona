@@ -1,5 +1,13 @@
 # Public website archived — 13 September 2026
 
+## Restored — 13 September 2026
+
+At the owner's request, the previous informational website was restored from the verified snapshot below: 24 public page, layout, stylesheet and asset files matched their archived SHA256 checksums. The original homepage, scroll animation, images, journal, contact page, privacy notice, metadata and sitemap are restored. The temporary blank page and blank stylesheet were removed.
+
+The blank version was saved before restoration to `W:\Wellness Brand\sukoona-backups\20260913-101918-blank-checkpoint`. Admin/API implementations and database contents were preserved. `.vercelignore` still excludes local environment files from uploads. Payment checkout remains disabled.
+
+## Previous archive operation
+
 The owner requested a completely blank public website and a separate backup for later restoration.
 
 Verified local backup: `W:\Wellness Brand\sukoona-backups\20260913-084722-public-22iAe\project`.

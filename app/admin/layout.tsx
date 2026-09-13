@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import "../globals.css";
-import "../enquiry.css";
 import "./admin.css";
 export const metadata: Metadata = {
   title: "Sukoona Admin",
